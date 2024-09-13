@@ -1,0 +1,23 @@
+{
+  "name": "codered-api",
+  "version": "1.0.0",
+  "description": "CodeRed API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eliott-B/CodeRed-API.git"
+  },
+  "author": "Eliott B",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eliott-B/CodeRed-API/issues"
+  },
+  "homepage": "https://github.com/Eliott-B/CodeRed-API#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "expressjs": "^1.0.1"
+  }
+}
