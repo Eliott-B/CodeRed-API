@@ -1,0 +1,36 @@
+services:
+  api:
+    container_name: codered-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    restart: always
+    env_file:
+      - ./.env/api-config
+      - ./.env/database-pass
+    volumes:
+      - ./src:/opt/codered/api/src
+    ports:
+      - 3000:4002
+    networks:
+      - base
+    stdin_open: true
+    tty: true
+
+  db:
+    container_name: codered-db
+    image: mariadb:11.4
+    restart: always
+    env_file:
+      - ./.env/database-pass
+    volumes:
+      - ./.data:/var/lib/mysql
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - base
+
+networks:
+  base:
+    driver: bridge
