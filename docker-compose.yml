@@ -5,7 +5,9 @@ services:
       context: .
       dockerfile: Dockerfile
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+        restart: true
     restart: always
     env_file:
       - ./.env/api-config
@@ -23,11 +25,17 @@ services:
     container_name: codered-db
     image: mariadb:11.4
     restart: always
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
+      start_period: 2s
+      start_interval: 2s
+      interval: 5s
+      timeout: 5s
+      retries: 10
     env_file:
       - ./.env/database-pass
     volumes:
       - ./.data:/var/lib/mysql
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - base
 
