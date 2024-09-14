@@ -1,0 +1,141 @@
+import { db, userModel } from '../app.js';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+
+const getAllGroups = async (req, res) => {
+    try {
+        await db.connect();
+        let groups = await userModel.findAll();
+        if (groups) {
+            res.status(200).json(groups);
+        } else {
+            res.status(404).send({ message: 'Groups not found' });
+        }
+        await db.close();
+    } catch (err) {
+        if (db.isConnected()) {
+            await db.close();
+        }
+        res.status(500).send({ message: err.message });
+    }
+}
+
+const getGroupById = async (req, res) => {
+    try {
+        await db.connect();
+        let group = await userModel.findByPk(req.params.id);
+        if (group) {
+            res.status(200).json(group);
+        } else {
+            res.status(404).send({ message: 'Group not found' });
+        }
+        await db.close();
+    } catch (err) {
+        if (db.isConnected()) {
+            await db.close();
+        }
+        res.status(500).send({ message: err.message });
+    }
+}
+
+const createGroup = async (req, res) => {
+    try {
+        const password = await bcrypt.hash(req.body.password, 10);
+        await db.connect();
+        let group = await userModel.create({
+            name: req.body.name,
+            password: password,
+            admin: req.body.admin
+        });
+        res.status(201).json(group);
+        await db.close();
+    } catch (err) {
+        if (db.isConnected()) {
+            await db.close();
+        }
+        res.status(500).send({ message: err.message });
+    }
+};
+
+const loginGroup = async (req, res) => {
+    try {
+        await db.connect();
+        let group = await userModel.findOne({ where: { name: req.body.name }});
+        if (group) {
+            const valid = await bcrypt.compare(req.body.password, group.password);
+            if (valid) {
+                const token = jwt.sign({
+                    groupUUID: group.id,
+                    admin: group.admin
+                }, process.env.TOKEN_SECRET, { expiresIn: '6h' });
+                res.status(200).send({ token: token });
+            } else {
+                res.status(406).json({ path: "password", message: "Invalid password" });
+            }
+        } else {
+            res.status(404).send({ message: 'Group not found' });
+        }
+        await db.close();
+    } catch (err) {
+        if (db.isConnected()) {
+            await db.close();
+        }
+        res.status(500).send({ message: err.message });
+    }
+};
+
+const authGroup = async (req, res) => {
+    jwt.verify(req.body.token, process.env.TOKEN_SECRET, (err) => {
+        if (err) {
+            res.status(401).json({ valid: false });
+        } else {
+            res.status(200).json({ valid: true });
+        }
+    });
+};
+
+const updateGroup = async (req, res) => {
+    try {
+        await db.connect();
+        let group = await userModel.findByPk(req.params.id);
+        if (group) {
+            if (req.auth.admin === true || req.auth.groupUUID === group.id) {
+                await group.update({
+                    name: req.body.name,
+                    password: req.body.password,
+                    admin: req.body.admin
+                });
+                res.status(200).json(group);
+            } else {
+                res.status(401).send({ message: 'Unauthorized' });
+            }
+        } else {
+            res.status(404).send({ message: 'Group not found' });
+        }
+    } catch (err) {
+        if (db.isConnected()) {
+            await db.close();
+        }
+        res.status(500).send({ message: err.message });
+    }
+};
+
+const deleteGroup = async (req, res) => {
+    try {
+        await db.connect();
+        let group = await userModel.findByPk(req.params.id);
+        if (group) {
+            await group.destroy();
+            res.status(204).send({ message: 'Group deleted' });
+        } else {
+            res.status(404).send({ message: 'Group not found' });
+        }
+    } catch (err) {
+        if (db.isConnected()) {
+            await db.close();
+        }
+        res.status(500).send({ message: err.message });
+    }
+};
+
+export { getAllGroups, getGroupById, createGroup, loginGroup, authGroup, updateGroup, deleteGroup };
