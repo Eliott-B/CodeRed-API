@@ -1,6 +1,6 @@
 import express from 'express';
 import authUser from '../middlewares/AuthUser.js';
-import authClient from '../middlewares/AuthClient';
+import authClient from '../middlewares/AuthClient.js';
 import isAdmin from '../middlewares/IsAdmin.js';
 import { getAllGroups, getGroupById, createGroup, loginGroup, authGroup, updateGroup, deleteGroup } from '../controllers/GroupsController.js';
 

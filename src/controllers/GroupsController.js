@@ -1,11 +1,11 @@
-import { db, userModel } from '../app.js';
+import { db, groupModel } from '../index.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 const getAllGroups = async (req, res) => {
     try {
         await db.connect();
-        let groups = await userModel.findAll();
+        let groups = await groupModel.findAll();
         if (groups) {
             res.status(200).json(groups);
         } else {
@@ -23,7 +23,7 @@ const getAllGroups = async (req, res) => {
 const getGroupById = async (req, res) => {
     try {
         await db.connect();
-        let group = await userModel.findByPk(req.params.id);
+        let group = await groupModel.findByPk(req.params.id);
         if (group) {
             res.status(200).json(group);
         } else {
@@ -42,7 +42,7 @@ const createGroup = async (req, res) => {
     try {
         const password = await bcrypt.hash(req.body.password, 10);
         await db.connect();
-        let group = await userModel.create({
+        let group = await groupModel.create({
             name: req.body.name,
             password: password,
             admin: req.body.admin
@@ -60,7 +60,7 @@ const createGroup = async (req, res) => {
 const loginGroup = async (req, res) => {
     try {
         await db.connect();
-        let group = await userModel.findOne({ where: { name: req.body.name }});
+        let group = await groupModel.findOne({ where: { name: req.body.name }});
         if (group) {
             const valid = await bcrypt.compare(req.body.password, group.password);
             if (valid) {
@@ -97,7 +97,7 @@ const authGroup = async (req, res) => {
 const updateGroup = async (req, res) => {
     try {
         await db.connect();
-        let group = await userModel.findByPk(req.params.id);
+        let group = await groupModel.findByPk(req.params.id);
         if (group) {
             if (req.auth.admin === true || req.auth.groupUUID === group.id) {
                 await group.update({
@@ -123,7 +123,7 @@ const updateGroup = async (req, res) => {
 const deleteGroup = async (req, res) => {
     try {
         await db.connect();
-        let group = await userModel.findByPk(req.params.id);
+        let group = await groupModel.findByPk(req.params.id);
         if (group) {
             await group.destroy();
             res.status(204).send({ message: 'Group deleted' });
