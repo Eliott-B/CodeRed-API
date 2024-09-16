@@ -15,7 +15,7 @@ services:
     volumes:
       - ./src:/opt/codered/api/src
     ports:
-      - 3000:4002
+      - 3000:3000
     networks:
       - base
     stdin_open: true
