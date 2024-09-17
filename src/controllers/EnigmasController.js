@@ -57,7 +57,7 @@ const createEnigma = async (req, res) => {
 const updateEnigma = async (req, res) => {
     try {
         await db.connect();
-        let enigma = await enigmaModel.findByPk(req.body.id);
+        let enigma = await enigmaModel.findByPk(req.params.id);
         if (enigma) {
             await enigma.update({
                 title: req.body.title,
@@ -79,7 +79,7 @@ const updateEnigma = async (req, res) => {
 const deleteEnigma = async (req, res) => {
     try {
         await db.connect();
-        let enigma = await enigmaModel.findByPk(req.body.id);
+        let enigma = await enigmaModel.findByPk(req.params.id);
         if (enigma) {
             await enigma.destroy();
             res.status(204).send({ message: 'Enigma deleted' });
