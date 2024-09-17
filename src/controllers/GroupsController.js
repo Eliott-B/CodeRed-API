@@ -97,7 +97,7 @@ const authGroup = async (req, res) => {
 const updateGroup = async (req, res) => {
     try {
         await db.connect();
-        let group = await groupModel.findByPk(req.body.id);
+        let group = await groupModel.findByPk(req.params.id);
         if (group) {
             if (req.auth.admin === true || req.auth.groupUUID === group.id) {
                 await group.update({
@@ -123,7 +123,7 @@ const updateGroup = async (req, res) => {
 const deleteGroup = async (req, res) => {
     try {
         await db.connect();
-        let group = await groupModel.findByPk(req.body.id);
+        let group = await groupModel.findByPk(req.params.id);
         if (group) {
             await group.destroy();
             res.status(204).send({ message: 'Group deleted' });
