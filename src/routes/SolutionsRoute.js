@@ -43,11 +43,11 @@ const solutionRouter = express.Router();
  *    - adminAuth: []
  *   filters:
  *    - in: path
- *     name: enigmaId
- *     schema:
- *      type: integer
+ *      name: enigmaId
+ *      schema:
+ *       type: integer
  *      required: true
- *     description: ID de l'énigme
+ *      description: ID de l'énigme
  *   responses:
  *    200:
  *     description: Retourne la liste des solutions
@@ -72,12 +72,12 @@ solutionRouter.get('/', authClient, authUser, isAdmin, getSolutionsToAnEnigma);
  *    - adminAuth: []
  *   filters:
  *    - in: path
- *     name: groupId
- *     schema:
- *      type: string
- *      format: uuid
+ *      name: groupId
+ *      schema:
+ *       type: string
+ *       format: uuid
  *      required: true
- *     description: ID du groupe
+ *      description: ID du groupe
  *   responses:
  *    200:
  *     description: Retourne la liste des solutions
@@ -204,10 +204,8 @@ solutionRouter.put('/:enigmaId/:groupId', authClient, authUser, isAdmin, updateS
  *      schema:
  *       type: object
  *       properties:
- *        solution:
- *         type: string
- *        description:
- *         type: string
+ *        success:
+ *         type: boolean
  *   responses:
  *    200:
  *     description: Solution modifiée
@@ -256,4 +254,4 @@ solutionRouter.put('/:enigmaId/:groupId', authClient, authUser, isAdmin, success
  */
 solutionRouter.delete('/:enigmaId/:groupId', authClient, authUser, isAdmin, deleteSolution);
 
-export default enigmaRouter;
+export default solutionRouter;
