@@ -41,7 +41,7 @@ const createEnigma = async (req, res) => {
         await db.connect();
         let enigma = await enigmaModel.create({
             title: req.body.title,
-            description: description,
+            description: req.body.description,
             points: req.body.points
         });
         res.status(201).json(enigma);
@@ -61,7 +61,7 @@ const updateEnigma = async (req, res) => {
         if (enigma) {
             await enigma.update({
                 title: req.body.title,
-                description: description,
+                description: req.body.description,
                 points: req.body.points
             });
             res.status(200).json(enigma);
