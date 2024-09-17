@@ -46,7 +46,7 @@ const enigmaRouter = express.Router();
  *    401:
  *     description: Non autorisé
  *    404:
- *     description: Aucune énigme trouvé
+ *     description: Aucune énigme trouvée
  *    500:
  *     description: Erreur serveur
  */
@@ -74,7 +74,7 @@ enigmaRouter.get('/', authClient, authUser, getAllEnigmas);
  *    401:
  *     description: Non autorisé
  *    404:
- *     description: Aucune énigme trouvé
+ *     description: Aucune énigme trouvée
  *    500:
  *     description: Erreur serveur
  */
@@ -105,7 +105,7 @@ enigmaRouter.get('/:id', authClient, authUser, getEnigmaById);
  *         type: integer
  *   responses:
  *    201:
- *     description: Enigme créé
+ *     description: Enigme créée
  *    401:
  *     description: Non autorisé
  *    500:
@@ -149,7 +149,7 @@ enigmaRouter.post('/', authClient, authUser, isAdmin, createEnigma);
  *    401:
  *     description: Non autorisé
  *    404:
- *     description: Enigme non retrouvé
+ *     description: Enigme non retrouvée
  *    500:
  *     description: Erreur serveur
  */
@@ -178,7 +178,7 @@ enigmaRouter.put('/:id', authClient, authUser, updateEnigma);
  *    401:
  *     description: Non autorisé
  *    404:
- *     description: Enigme non retrouvé
+ *     description: Enigme non retrouvée
  *    500:
  *     description: Erreur serveur
  */
