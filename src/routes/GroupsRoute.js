@@ -54,7 +54,7 @@ groupRouter.get('/', authClient, authUser, getAllGroups);
 
 /**
  * @swagger
- * /api/groups:id:
+ * /api/groups/:id:
  *  get:
  *   tags: [Groups]
  *   summary: Récupère un groupe par son UUID
@@ -177,7 +177,7 @@ groupRouter.post('/auth', authClient, authGroup);
 
 /**
  * @swagger
- * /api/groups:id:
+ * /api/groups/:id:
  *  put:
  *   tags: [Groups]
  *   summary: Modifie un groupe par son UUID
@@ -220,7 +220,7 @@ groupRouter.put('/:id', authClient, authUser, updateGroup);
 
 /**
  * @swagger
- * /api/groups:id:
+ * /api/groups/:id:
  *  delete:
  *   tags: [Groups]
  *   summary: Supprime un groupe par son UUID

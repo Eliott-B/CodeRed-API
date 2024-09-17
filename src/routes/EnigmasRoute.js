@@ -54,7 +54,7 @@ enigmaRouter.get('/', authClient, authUser, getAllEnigmas);
 
 /**
  * @swagger
- * /api/enigmas:id:
+ * /api/enigmas/:id:
  *  get:
  *   tags: [Enigmas]
  *   summary: Récupère une énigme par son ID
@@ -115,7 +115,7 @@ enigmaRouter.post('/', authClient, authUser, isAdmin, createEnigma);
 
 /**
  * @swagger
- * /api/enigmas:id:
+ * /api/enigmas/:id:
  *  put:
  *   tags: [Enigmas]
  *   summary: Modifie une énigme par son ID
@@ -145,7 +145,7 @@ enigmaRouter.post('/', authClient, authUser, isAdmin, createEnigma);
  *         type: integer
  *   responses:
  *    200:
- *     description: Enigme modifié
+ *     description: Enigme modifiée
  *    401:
  *     description: Non autorisé
  *    404:
@@ -153,11 +153,11 @@ enigmaRouter.post('/', authClient, authUser, isAdmin, createEnigma);
  *    500:
  *     description: Erreur serveur
  */
-enigmaRouter.put('/:id', authClient, authUser, updateEnigma);
+enigmaRouter.put('/:id', authClient, authUser, isAdmin, updateEnigma);
 
 /**
  * @swagger
- * /api/enigmas:id:
+ * /api/enigmas/:id:
  *  delete:
  *   tags: [Enigmas]
  *   summary: Supprime une énigme par son ID
@@ -174,7 +174,7 @@ enigmaRouter.put('/:id', authClient, authUser, updateEnigma);
  *      description: ID de l'énigme
  *   responses:
  *    200:
- *     description: Enigme supprimé
+ *     description: Enigme supprimée
  *    401:
  *     description: Non autorisé
  *    404:
