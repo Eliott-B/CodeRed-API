@@ -12,7 +12,7 @@ import SolutionModel from './models/SolutionModel.js';
 
 import groupsRouter from './routes/GroupsRoute.js';
 import enigmasRouter from './routes/EnigmasRoute.js';
-// import solutionsRouter from './routes/SolutionsRoute.js';
+import solutionsRouter from './routes/SolutionsRoute.js';
 
 dotenv.config();
 
@@ -35,7 +35,7 @@ await db.close();
 
 app.use('/api/groups', groupsRouter);
 app.use('/api/enigmas', enigmasRouter);
-// app.use('/api/solutions', solutionsRouter);
+app.use('/api/solutions', solutionsRouter);
 
 const options = {
   definition: {
