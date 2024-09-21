@@ -8,7 +8,8 @@ API pour le projet CodeRed, le grand jeu d'intégration de l'IUT de Vélizy.
 
 ### Prérequis
 
-- [Docker](https://www.docker.com/)
+- [MariaDB](https://mariadb.org/)
+- [Node.js](https://nodejs.org/)
 
 ### Installation
 
@@ -18,33 +19,32 @@ API pour le projet CodeRed, le grand jeu d'intégration de l'IUT de Vélizy.
 git clone https://github.com/Eliott-B/CodeRed-API.git
 ```
 
-2. Cloner le [Client](https://github.com/Eliott-B/CodeRed-Client) et suivre les instructions
+2. Cloner le [Client](https://github.com/Eliott-B/CodeRed-Client) et suivre les instructions  
 
-3. Créer un dossier `.env` à la racine du projet
+3. Installer MariaDB et configurer un utilisateur et une base de données  
 
-4. Créer un fichier `database-pass` dans le dossier `.env`
+*Exemple de configuration :*  
 
-```env
-MYSQL_DATABASE=
-MYSQL_USER=
-MYSQL_PASSWORD=
-MYSQL_ROOT_PASSWORD=
+```sql
+CREATE DATABASE codered;
+CREATE USER 'codered'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON codered.* TO 'codered'@'localhost';
+FLUSH PRIVILEGES;
 ```
 
-5. Créer un fichier `api-config` dans le dossier `.env`
+4. Lancer le script `setenv.sh` et suivre les instructions
 
-```env
-AUTH_PASS=
-TOKEN_SECRET=
+```bash
+./setenv.sh
 ```
 
 *`AUTH_PASS` sert de clé pour savoir si c'est le bon client qui nous parle.*  
 *`TOLEN_SECRET` sert à chiffrer les tokens JWT.*  
 
-6. Lancer l'API
+5. Lancer l'API avec le script `run.sh`
 
 ```bash
-docker compose up # -d pour lancer en arrière plan
+./run.sh
 ```
 
 ## :busts_in_silhouette: • Contributeurs
