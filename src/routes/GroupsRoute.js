@@ -251,7 +251,7 @@ groupRouter.delete('/:id', authClient, authUser, isAdmin, deleteGroup);
 /**
  * @swagger
  * /api/groups/:id:
- *  post:
+ *  patch:
  *   tags: [Groups]
  *   summary: Ajoute un malus à un groupe par son UUID
  *   security:
@@ -285,6 +285,6 @@ groupRouter.delete('/:id', authClient, authUser, isAdmin, deleteGroup);
  *    500:
  *     description: Erreur serveur
  */
-groupRouter.put('/:id', authClient, authUser, isAdmin, addPenalty);
+groupRouter.patch('/:id', authClient, authUser, isAdmin, addPenalty);
 
 export default groupRouter;

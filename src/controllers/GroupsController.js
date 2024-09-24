@@ -157,4 +157,4 @@ const addPenalty = async (req, res) => {
     }
 }
 
-export { getAllGroups, getGroupById, createGroup, loginGroup, authGroup, updateGroup, deleteGroup };
+export { getAllGroups, getGroupById, createGroup, loginGroup, authGroup, updateGroup, deleteGroup, addPenalty };
