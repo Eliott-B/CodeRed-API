@@ -116,6 +116,8 @@ solutionRouter.get('/:id', authClient, authUser, isAdmin, getSolutionsToAnGroup)
  *         type: string
  *        inputPath:
  *         type: string
+ *        consoleOutput:
+ *         type: string
  *   responses:
  *    201:
  *     description: Solution créée
@@ -159,7 +161,9 @@ solutionRouter.post('/', authClient, authUser, isAdmin, createSolution);
  *       properties:
  *        solution:
  *         type: string
- *        description:
+ *        inputPath:
+ *         type: string
+ *        consoleOutput:
  *         type: string
  *   responses:
  *    200:

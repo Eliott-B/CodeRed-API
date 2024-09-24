@@ -43,7 +43,8 @@ const createSolution = async (req, res) => {
             enigma_id: req.body.enigmaId,
             group_id: req.body.groupId,
             solution: req.body.solution,
-            input_path: req.body.inputPath
+            input_path: req.body.inputPath,
+            console_output: req.body.consoleOutput
         });
         res.status(201).json(solution);
         await db.close();
@@ -62,7 +63,8 @@ const updateSolution = async (req, res) => {
         if (solution) {
             await solution.update({
                 solution: req.body.solution,
-                description: req.body.input_path
+                description: req.body.input_path,
+                console_output: req.body.console_output
             });
             res.status(200).json(solution);
         } else {

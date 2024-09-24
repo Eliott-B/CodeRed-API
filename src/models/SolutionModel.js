@@ -42,6 +42,9 @@ const SolutionModel = (sequelize) => {
         input_path: {
             type: DataTypes.TEXT('long')
         },
+        console_output: {
+            type: DataTypes.TEXT('long')
+        },
         success: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
