@@ -32,14 +32,24 @@ GRANT ALL PRIVILEGES ON codered.* TO 'codered'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
-4. Lancer le script `setenv.sh` et suivre les instructions
+4. Lancer le script `setup.sh` et suivre les instructions
 
 ```bash
-./setenv.sh
+./setup.sh
 ```
 
 *`AUTH_PASS` sert de clé pour savoir si c'est le bon client qui nous parle.*  
 *`TOLEN_SECRET` sert à chiffrer les tokens JWT.*  
+
+Sinon, vous pouvez les définir dans un fichier `.env` à la racine du projet.  
+
+```env
+AUTH_PASS=your_auth_pass
+TOKEN_SECRET=your_token_secret
+MYSQL_DATABASE=your_database
+MYSQL_USER=your_user
+MYSQL_PASSWORD=your_password
+```
 
 5. Lancer l'API avec le script `run.sh`
 

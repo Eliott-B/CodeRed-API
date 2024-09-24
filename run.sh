@@ -7,7 +7,7 @@
 if [ $# -gt 0 ]; then
     for arg in "$@"; do
         if [[ $arg = "-s" || $arg = "--setenv" ]]; then
-            ./setenv.sh
+            ./setup.sh
         elif [[ $arg = "-h" ]]; then
             echo "Script pour lancer l'API de CodeRed"
             echo "Usage: ./run.sh [-s --setenv]"
