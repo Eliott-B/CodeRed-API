@@ -56,6 +56,16 @@ const EnigmaModel = (sequelize) => {
                     msg: "Entrez un nombre de points"
                 }
             }
+        },
+        enabled: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },
+        final: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
         }
     },
     {

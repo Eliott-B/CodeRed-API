@@ -2,7 +2,7 @@ import express from 'express';
 import authUser from '../middlewares/AuthUser.js';
 import authClient from '../middlewares/AuthClient.js';
 import isAdmin from '../middlewares/IsAdmin.js';
-import { getAllEnigmas, getEnigmaById, createEnigma, updateEnigma, deleteEnigma } from '../controllers/EnigmasController.js';
+import { getAllEnigmas, getEnigmaById, createEnigma, updateEnigma, deleteEnigma, enabledEnigmas, enabledFinalEnigmas } from '../controllers/EnigmasController.js';
 
 const enigmaRouter = express.Router();
 
@@ -103,6 +103,8 @@ enigmaRouter.get('/:id', authClient, authUser, getEnigmaById);
  *         type: string
  *        points:
  *         type: integer
+ *        final:
+ *         type: boolean
  *   responses:
  *    201:
  *     description: Enigme créée
@@ -143,6 +145,10 @@ enigmaRouter.post('/', authClient, authUser, isAdmin, createEnigma);
  *         type: string
  *        points:
  *         type: integer
+ *        final:
+ *         type: boolean
+ *        enabled:
+ *         type: boolean
  *   responses:
  *    200:
  *     description: Enigme modifiée
@@ -183,5 +189,47 @@ enigmaRouter.put('/:id', authClient, authUser, isAdmin, updateEnigma);
  *     description: Erreur serveur
  */
 enigmaRouter.delete('/:id', authClient, authUser, isAdmin, deleteEnigma);
+
+/**
+ * @swagger
+ * /api/enigmas:
+ *  patch:
+ *   tags: [Enigmas]
+ *   summary: Active les énigmes
+ *   security:
+ *    - clientAuth: []
+ *    - userAuth: []
+ *   responses:
+ *    200:
+ *     description: Les énigmes ont été activées
+ *    401:
+ *     description: Non autorisé
+ *    404:
+ *     description: Aucune énigme trouvée
+ *    500:
+ *     description: Erreur serveur
+ */
+enigmaRouter.patch('/', authClient, authUser, isAdmin, enabledEnigmas);
+
+/**
+ * @swagger
+ * /api/enigmas/final:
+ *  patch:
+ *   tags: [Enigmas]
+ *   summary: Active les énigmes finales
+ *   security:
+ *    - clientAuth: []
+ *    - userAuth: []
+ *   responses:
+ *    200:
+ *     description: Les énigmes finales ont été activées
+ *    401:
+ *     description: Non autorisé
+ *    404:
+ *     description: Aucune énigme trouvée
+ *    500:
+ *     description: Erreur serveur
+ */
+enigmaRouter.patch('/final', authClient, authUser, isAdmin, enabledFinalEnigmas);
 
 export default enigmaRouter;
