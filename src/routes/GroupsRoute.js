@@ -2,7 +2,7 @@ import express from 'express';
 import authUser from '../middlewares/AuthUser.js';
 import authClient from '../middlewares/AuthClient.js';
 import isAdmin from '../middlewares/IsAdmin.js';
-import { getAllGroups, getGroupById, createGroup, loginGroup, authGroup, updateGroup, deleteGroup } from '../controllers/GroupsController.js';
+import { getAllGroups, getGroupById, createGroup, loginGroup, authGroup, updateGroup, deleteGroup, addPenalty } from '../controllers/GroupsController.js';
 
 const groupRouter = express.Router();
 
@@ -247,5 +247,44 @@ groupRouter.put('/:id', authClient, authUser, updateGroup);
  *     description: Erreur serveur
  */
 groupRouter.delete('/:id', authClient, authUser, isAdmin, deleteGroup);
+
+/**
+ * @swagger
+ * /api/groups/:id:
+ *  post:
+ *   tags: [Groups]
+ *   summary: Ajoute un malus à un groupe par son UUID
+ *   security:
+ *    - clientAuth: []
+ *    - userAuth: []
+ *    - adminAuth: []
+ *   parameters:
+ *    - in: path
+ *      name: id
+ *      schema:
+ *       type: string
+ *       format: uuid
+ *      required: true
+ *      description: UUID du groupe
+ *   requestBody:
+ *    required: true
+ *    content:
+ *     application/json:
+ *      schema:
+ *       type: object
+ *       properties:
+ *        penalty:
+ *         type: integer
+ *   responses:
+ *    200:
+ *     description: Malus ajouté
+ *    401:
+ *     description: Non autorisé
+ *    404:
+ *     description: Groupe non retrouvé
+ *    500:
+ *     description: Erreur serveur
+ */
+groupRouter.put('/:id', authClient, authUser, isAdmin, addPenalty);
 
 export default groupRouter;

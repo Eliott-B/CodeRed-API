@@ -138,4 +138,23 @@ const deleteGroup = async (req, res) => {
     }
 };
 
+const addPenalty = async (req, res) => {
+    try {
+        await db.connect();
+        let group = await groupModel.findByPk(req.params.id);
+        if (group) {
+            group.penalty += req.body.penalty;
+            await group.save();
+            res.status(204).send({ message: 'Penalty added' });
+        } else {
+            res.status(404).send({ message: 'Group not found' });
+        }
+    } catch (err) {
+        if (db.isConnected()) {
+            await db.close();
+        }
+        res.status(500).send({ message: err.message });
+    }
+}
+
 export { getAllGroups, getGroupById, createGroup, loginGroup, authGroup, updateGroup, deleteGroup };
