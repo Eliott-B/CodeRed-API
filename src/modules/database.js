@@ -3,9 +3,14 @@ import { Sequelize } from 'sequelize';
 class Database {
     constructor() {
         this.db = new Sequelize(process.env.MYSQL_DATABASE, process.env.MYSQL_USER, process.env.MYSQL_PASSWORD, {
-            host: 'codered-db',
+            host: process.env.MYSQL_HOST,
             dialect: 'mariadb',
-            port: 3306
+            port: 3306,
+            pool: {
+                max: 5,
+                min: 0,
+                idle: 10000 // Ferme les connexions inactives après 10 secondes
+              }
         });
     }
 
@@ -16,10 +21,6 @@ class Database {
         } catch (error) {
             console.error('Unable to connect to the database:', error);
         }
-    }
-
-    async close() {
-        await this.db.close();
     }
 
     async sync() {

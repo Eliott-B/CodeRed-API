@@ -2,43 +2,32 @@ import { db, enigmaModel } from '../index.js';
 
 const getAllEnigmas = async (req, res) => {
     try {
-        await db.connect();
         let enigmas = await enigmaModel.findAll();
         if (enigmas) {
             res.status(200).json(enigmas);
         } else {
             res.status(404).send({ message: 'Enigma not found' });
         }
-        await db.close();
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 };
 
 const getEnigmaById = async (req, res) => {
     try {
-        await db.connect();
         let enigma = await enigmaModel.findByPk(req.params.id);
         if (enigma) {
             res.status(200).json(enigma);
         } else {
             res.status(404).send({ message: 'Enigma not found' });
         }
-        await db.close();
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 }
 
 const createEnigma = async (req, res) => {
     try {
-        await db.connect();
         let enigma = await enigmaModel.create({
             title: req.body.title,
             description: req.body.description,
@@ -46,18 +35,13 @@ const createEnigma = async (req, res) => {
             final: req.body.final
         });
         res.status(201).json(enigma);
-        await db.close();
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 };
 
 const updateEnigma = async (req, res) => {
     try {
-        await db.connect();
         let enigma = await enigmaModel.findByPk(req.params.id);
         if (enigma) {
             await enigma.update({
@@ -72,16 +56,12 @@ const updateEnigma = async (req, res) => {
             res.status(404).send({ message: 'Enigma not found' });
         }
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 };
 
 const deleteEnigma = async (req, res) => {
     try {
-        await db.connect();
         let enigma = await enigmaModel.findByPk(req.params.id);
         if (enigma) {
             await enigma.destroy();
@@ -90,16 +70,12 @@ const deleteEnigma = async (req, res) => {
             res.status(404).send({ message: 'Enigma not found' });
         }
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 };
 
 const enabledEnigmas = async(req, res) => {
     try {
-        await db.connect();
         let enigmas = await enigmaModel.findAll({ where : { final: false } });
         if (enigmas) {
             enigmas.forEach(enigma => {
@@ -111,18 +87,13 @@ const enabledEnigmas = async(req, res) => {
         } else {
             res.status(404).send({ message: 'Enigma not found' });
         }
-        await db.close();
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 };
 
 const enabledFinalEnigmas = async(req, res) => {
     try {
-        await db.connect();
         let enigmas = await enigmaModel.findAll({ where : { final: true } });
         if (enigmas) {
             enigmas.forEach(enigma => {
@@ -134,11 +105,7 @@ const enabledFinalEnigmas = async(req, res) => {
         } else {
             res.status(404).send({ message: 'Enigma not found' });
         }
-        await db.close();
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 }

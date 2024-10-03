@@ -4,36 +4,26 @@ import bcrypt from 'bcrypt';
 
 const getAllGroups = async (req, res) => {
     try {
-        await db.connect();
         let groups = await groupModel.findAll();
         if (groups) {
             res.status(200).json(groups);
         } else {
             res.status(404).send({ message: 'Groups not found' });
         }
-        await db.close();
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 }
 
 const getGroupById = async (req, res) => {
     try {
-        await db.connect();
         let group = await groupModel.findByPk(req.params.id);
         if (group) {
             res.status(200).json(group);
         } else {
             res.status(404).send({ message: 'Group not found' });
         }
-        await db.close();
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 }
@@ -41,25 +31,19 @@ const getGroupById = async (req, res) => {
 const createGroup = async (req, res) => {
     try {
         const password = await bcrypt.hash(req.body.password, 10);
-        await db.connect();
         let group = await groupModel.create({
             name: req.body.name,
             password: password,
             admin: req.body.admin
         });
         res.status(201).json(group);
-        await db.close();
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 };
 
 const loginGroup = async (req, res) => {
     try {
-        await db.connect();
         let group = await groupModel.findOne({ where: { name: req.body.name }});
         if (group) {
             const valid = await bcrypt.compare(req.body.password, group.password);
@@ -75,11 +59,7 @@ const loginGroup = async (req, res) => {
         } else {
             res.status(404).send({ message: 'Group not found' });
         }
-        await db.close();
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 };
@@ -96,7 +76,6 @@ const authGroup = async (req, res) => {
 
 const updateGroup = async (req, res) => {
     try {
-        await db.connect();
         let group = await groupModel.findByPk(req.params.id);
         if (group) {
             if (req.auth.admin === true || req.auth.groupUUID === group.id) {
@@ -113,16 +92,12 @@ const updateGroup = async (req, res) => {
             res.status(404).send({ message: 'Group not found' });
         }
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 };
 
 const deleteGroup = async (req, res) => {
     try {
-        await db.connect();
         let group = await groupModel.findByPk(req.params.id);
         if (group) {
             await group.destroy();
@@ -131,16 +106,12 @@ const deleteGroup = async (req, res) => {
             res.status(404).send({ message: 'Group not found' });
         }
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 };
 
 const addPenalty = async (req, res) => {
     try {
-        await db.connect();
         let group = await groupModel.findByPk(req.params.id);
         if (group) {
             group.penalty += req.body.penalty;
@@ -150,9 +121,6 @@ const addPenalty = async (req, res) => {
             res.status(404).send({ message: 'Group not found' });
         }
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 }

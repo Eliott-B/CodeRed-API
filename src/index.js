@@ -17,7 +17,7 @@ import solutionsRouter from './routes/SolutionsRoute.js';
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = 8000;
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,7 +31,6 @@ const solutionModel = SolutionModel(db.db);
 
 await db.connect();
 await db.sync();
-await db.close();
 
 app.use('/api/groups', groupsRouter);
 app.use('/api/enigmas', enigmasRouter);

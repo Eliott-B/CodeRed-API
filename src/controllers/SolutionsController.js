@@ -2,43 +2,32 @@ import { db, solutionModel } from '../index.js';
 
 const getSolutionsToAnEnigma = async (req, res) => {
     try {
-        await db.connect();
         let solutions = await solutionModel.findAll({ where: { enigma_id: req.params.enigmaId } });
         if (solutions) {
             res.status(200).json(solutions);
         } else {
             res.status(404).send({ message: 'Solution not found' });
         }
-        await db.close();
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 };
 
 const getSolutionsToAnGroup = async (req, res) => {
     try {
-        await db.connect();
         let solutions = await solutionModel.findAll({ where: { group_id: req.filter.groupId } });
         if (solutions) {
             res.status(200).json(solutions);
         } else {
             res.status(404).send({ message: 'Solution not found' });
         }
-        await db.close();
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 }
 
 const createSolution = async (req, res) => {
     try {
-        await db.connect();
         let solution = await solutionModel.create({
             enigma_id: req.body.enigmaId,
             group_id: req.body.groupId,
@@ -47,18 +36,13 @@ const createSolution = async (req, res) => {
             console_output: req.body.consoleOutput
         });
         res.status(201).json(solution);
-        await db.close();
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 };
 
 const updateSolution = async (req, res) => {
     try {
-        await db.connect();
         let solution = await solutionModel.findByPk(req.params.enigmaId, req.params.groupId);
         if (solution) {
             await solution.update({
@@ -71,16 +55,12 @@ const updateSolution = async (req, res) => {
             res.status(404).send({ message: 'Solution not found' });
         }
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 };
 
 const successSolution = async (req, res) => {
     try {
-        await db.connect();
         let solution = await solutionModel.findByPk(req.params.enigmaId, req.params.groupId);
         if (solution) {
             await solution.update({
@@ -91,16 +71,12 @@ const successSolution = async (req, res) => {
             res.status(404).send({ message: 'Solution not found' });
         }
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 };
 
 const deleteSolution = async (req, res) => {
     try {
-        await db.connect();
         let solution = await solutionModel.findByPk(req.params.enigmaId, req.params.groupId);
         if (solution) {
             await solution.destroy();
@@ -109,9 +85,6 @@ const deleteSolution = async (req, res) => {
             res.status(404).send({ message: 'Solution not found' });
         }
     } catch (err) {
-        if (db.isConnected()) {
-            await db.close();
-        }
         res.status(500).send({ message: err.message });
     }
 };
