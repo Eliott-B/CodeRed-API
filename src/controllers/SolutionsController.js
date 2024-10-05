@@ -60,6 +60,9 @@ const updateSolution = async (req, res) => {
 };
 
 const successSolution = async (req, res) => {
+    if (req.body.success === undefined) {
+        return
+    }
     try {
         let solution = await solutionModel.findByPk(req.params.enigmaId, req.params.groupId);
         if (solution) {
@@ -76,6 +79,9 @@ const successSolution = async (req, res) => {
 };
 
 const useTip = async (req, res) => {
+    if (req.body.tip_used === undefined) {
+        return
+    }
     try {
         let solution = await solutionModel.findByPk(req.params.enigmaId, req.params.groupId);
         if (solution) {
