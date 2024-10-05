@@ -75,6 +75,22 @@ const successSolution = async (req, res) => {
     }
 };
 
+const useTip = async (req, res) => {
+    try {
+        let solution = await solutionModel.findByPk(req.params.enigmaId, req.params.groupId);
+        if (solution) {
+            await solution.update({
+                tip_used: req.body.tip_used
+            });
+            res.status(200).json(solution);
+        } else {
+            res.status(404).send({ message: 'Solution not found' });
+        }
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+}
+
 const deleteSolution = async (req, res) => {
     try {
         let solution = await solutionModel.findByPk(req.params.enigmaId, req.params.groupId);
@@ -89,4 +105,4 @@ const deleteSolution = async (req, res) => {
     }
 };
 
-export { getSolutionsToAnEnigma, getSolutionsToAnGroup, createSolution, updateSolution, successSolution, deleteSolution };
+export { getSolutionsToAnEnigma, getSolutionsToAnGroup, createSolution, updateSolution, successSolution, useTip, deleteSolution };

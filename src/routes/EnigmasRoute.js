@@ -103,6 +103,10 @@ enigmaRouter.get('/:id', authClient, authUser, getEnigmaById);
  *         type: string
  *        points:
  *         type: integer
+ *        tip:
+ *         type: string
+ *        tip_cost:
+ *         type: integer
  *        final:
  *         type: boolean
  *   responses:

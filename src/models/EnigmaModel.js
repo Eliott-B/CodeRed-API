@@ -57,6 +57,23 @@ const EnigmaModel = (sequelize) => {
                 }
             }
         },
+        tip: {
+            type: DataTypes.TEXT('long'),
+            allowNull: true
+        },
+        tip_cost: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            notEmpty: false,
+            validate: {
+                notNull: {
+                    msg: "Entrez un coût de tip"
+                },
+                notEmpty: {
+                    msg: "Entrez un coût de tip"
+                }
+            }
+        },
         enabled: {
             type: DataTypes.BOOLEAN,
             allowNull: false,

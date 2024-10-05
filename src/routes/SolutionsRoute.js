@@ -2,7 +2,7 @@ import express from 'express';
 import authUser from '../middlewares/AuthUser.js';
 import authClient from '../middlewares/AuthClient.js';
 import isAdmin from '../middlewares/IsAdmin.js';
-import { getSolutionsToAnEnigma, getSolutionsToAnGroup, createSolution, updateSolution, successSolution, deleteSolution } from '../controllers/SolutionsController.js';
+import { getSolutionsToAnEnigma, getSolutionsToAnGroup, createSolution, updateSolution, successSolution, useTip, deleteSolution } from '../controllers/SolutionsController.js';
 
 const solutionRouter = express.Router();
 
@@ -221,6 +221,51 @@ solutionRouter.put('/:enigmaId/:groupId', authClient, authUser, isAdmin, updateS
  *     description: Erreur serveur
  */
 solutionRouter.put('/:enigmaId/:groupId', authClient, authUser, isAdmin, successSolution);
+
+/**
+ * @swagger
+ * /api/solutions/:enigmaId/:groupId:
+ *  patch:
+ *   tags: [Solutions]
+ *   summary: Modifie l'utilisation d'un indice d'une solution par l'ID de l'énigme et l'UUID du groupe
+ *   security:
+ *    - clientAuth: []
+ *    - userAuth: []
+ *    - adminAuth: []
+ *   parameters:
+ *    - in: path
+ *      name: enigmaId
+ *      schema:
+ *       type: integer
+ *      required: true
+ *      description: ID de l'énigme
+ *    - in: path
+ *      name: groupId
+ *      schema:
+ *       type: string
+ *       format: uuid
+ *      required: true
+ *      description: UUID du groupe
+ *   requestBody:
+ *    required: true
+ *    content:
+ *     application/json:
+ *      schema:
+ *       type: object
+ *       properties:
+ *        tip_used:
+ *         type: boolean
+ *   responses:
+ *    200:
+ *     description: Solution modifiée
+ *    401:
+ *     description: Non autorisé
+ *    404:
+ *     description: Solution non retrouvée
+ *    500:
+ *     description: Erreur serveur
+ */
+solutionRouter.put('/:enigmaId/:groupId', authClient, authUser, isAdmin, useTip);
 
 /**
  * @swagger

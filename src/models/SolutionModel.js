@@ -48,6 +48,10 @@ const SolutionModel = (sequelize) => {
         success: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
+        },
+        tip_used: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
         }
     },
     {

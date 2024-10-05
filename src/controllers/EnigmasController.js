@@ -32,6 +32,8 @@ const createEnigma = async (req, res) => {
             title: req.body.title,
             description: req.body.description,
             points: req.body.points,
+            tip: req.body.tip,
+            tip_cost: req.body.tip_cost,
             final: req.body.final
         });
         res.status(201).json(enigma);
@@ -48,6 +50,8 @@ const updateEnigma = async (req, res) => {
                 title: req.body.title,
                 description: req.body.description,
                 points: req.body.points,
+                tip: req.body.tip,
+                tip_cost: req.body.tip_cost,
                 enabled: req.body.enabled,
                 final: req.body.final
             });
