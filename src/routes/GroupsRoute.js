@@ -2,7 +2,7 @@ import express from 'express';
 import authUser from '../middlewares/AuthUser.js';
 import authClient from '../middlewares/AuthClient.js';
 import isAdmin from '../middlewares/IsAdmin.js';
-import { getAllGroups, getGroupById, createGroup, loginGroup, authGroup, updateGroup, deleteGroup, addPenalty, getGroupsPoints, GetPoints } from '../controllers/GroupsController.js';
+import { getAllGroups, getGroupById, createGroup, loginGroup, authGroup, updateGroup, deleteGroup, addPenalty, getGroupsPoints, getPoints } from '../controllers/GroupsController.js';
 
 const groupRouter = express.Router();
 
@@ -289,7 +289,7 @@ groupRouter.patch('/:id', authClient, authUser, isAdmin, addPenalty);
 
 /**
  * @swagger
- * /api/groups/points
+ * /api/groups/points:
  *  get:
  *   tags: [Groups]
  *   summary: Récupère les points des groupes
@@ -336,6 +336,6 @@ groupRouter.get('/points', authClient, authUser, isAdmin, getGroupsPoints);
  *    500:
  *     description: Erreur serveur
  */
-groupRouter.get('/points/:id', authClient, authUser, GetPoints);
+groupRouter.get('/points/:id', authClient, authUser, getPoints);
 
 export default groupRouter;

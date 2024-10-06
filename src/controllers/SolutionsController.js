@@ -15,7 +15,7 @@ const getSolutionsToAnEnigma = async (req, res) => {
 
 const getSolutionsToAnGroup = async (req, res) => {
     try {
-        let solutions = await solutionModel.findAll({ where: { group_id: req.filter.groupId } });
+        let solutions = await solutionModel.findAll({ where: { group_id: req.params.id } });
         if (solutions) {
             res.status(200).json(solutions);
         } else {

@@ -1,4 +1,4 @@
-import { db, groupModel } from '../index.js';
+import { db, enigmaModel, groupModel, solutionModel } from '../index.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
@@ -52,7 +52,7 @@ const loginGroup = async (req, res) => {
                     groupUUID: group.id,
                     admin: group.admin
                 }, process.env.TOKEN_SECRET, { expiresIn: '6h' });
-                res.status(200).send({ token: token });
+                res.status(200).send({ token: token, id: group.id });
             } else {
                 res.status(406).json({ path: "password", message: "Invalid password" });
             }
@@ -152,13 +152,13 @@ const getGroupsPoints = async (req, res) => {
 
 const getPoints = async (req, res) => {
     try {
-        if (req.auth.admin === false || req.auth.groupUUID !== req.params.id) {
+        if (req.auth.admin === false) {
             res.status(401).send({ message: 'Unauthorized' });
         }
         else {
             let group = await groupModel.findByPk(req.params.id);
             if (group) {
-                points = group.points;
+                let points = group.penalty
 
                 let groupSolutions = await solutionModel.findAll({ where: { group_id: req.params.id } });
 
