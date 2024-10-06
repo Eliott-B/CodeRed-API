@@ -128,11 +128,23 @@ const addPenalty = async (req, res) => {
 const getGroupsPoints = async (req, res) => {
     try {
         let groups = await groupModel.findAll();
-        let points = [];
-        groups.forEach(group => {
-            points.push({ name: group.name, points: group.points });
+        let results = [];
+        groups.forEach(async group => {
+            let localPoints = group.points;
+            let groupSolutions = await solutionModel.findAll({ where: { group_id: req.params.id } });
+            groupSolutions.forEach(async solution => {
+                if (solution.success === true) {
+                    let enigma = await enigmaModel.findByPk(solution.enigma_id);
+                    localPoints += enigma.points;
+                }
+                if (solution.tip_used === true) {
+                    let enigma = await enigmaModel.findByPk(solution.enigma_id);
+                    localPoints -= enigma.tip_cost;
+                }
+            });
+            results.push({ name: group.name, points: localPoints });
         });
-        res.status(200).json(points);
+        res.status(200).json(results);
     } catch (err) {
         res.status(500).send({ message: err.message });
     }
@@ -146,7 +158,22 @@ const getPoints = async (req, res) => {
         else {
             let group = await groupModel.findByPk(req.params.id);
             if (group) {
-                res.status(200).json({ points: group.points });
+                points = group.points;
+
+                let groupSolutions = await solutionModel.findAll({ where: { group_id: req.params.id } });
+
+                groupSolutions.forEach(async solution => {
+                    if (solution.success === true) {
+                        let enigma = await enigmaModel.findByPk(solution.enigma_id);
+                        points += enigma.points;
+                    }
+                    if (solution.tip_used === true) {
+                        let enigma = await enigmaModel.findByPk(solution.enigma_id);
+                        points -= enigma.tip_cost;
+                    }
+                });
+
+                res.status(200).json({ points: points });
             } else {
                 res.status(404).send({ message: 'Group not found' });
             }
