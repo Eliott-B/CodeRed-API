@@ -2,7 +2,7 @@ import express from 'express';
 import authUser from '../middlewares/AuthUser.js';
 import authClient from '../middlewares/AuthClient.js';
 import isAdmin from '../middlewares/IsAdmin.js';
-import { getAllGroups, getGroupById, createGroup, loginGroup, authGroup, updateGroup, deleteGroup, addPenalty } from '../controllers/GroupsController.js';
+import { getAllGroups, getGroupById, createGroup, loginGroup, authGroup, updateGroup, deleteGroup, addPenalty, getGroupsPoints, GetPoints } from '../controllers/GroupsController.js';
 
 const groupRouter = express.Router();
 
@@ -286,5 +286,56 @@ groupRouter.delete('/:id', authClient, authUser, isAdmin, deleteGroup);
  *     description: Erreur serveur
  */
 groupRouter.patch('/:id', authClient, authUser, isAdmin, addPenalty);
+
+/**
+ * @swagger
+ * /api/groups/points
+ *  get:
+ *   tags: [Groups]
+ *   summary: Récupère les points des groupes
+ *   security:
+ *    - clientAuth: []
+ *    - userAuth: []
+ *    - adminAuth: []
+ *   responses:
+ *    200:
+ *     description: Retourne les points des groupes
+ *    401:
+ *     description: Non autorisé
+ *    404:
+ *     description: Aucun groupe trouvé
+ *    500:
+ *     description: Erreur serveur
+ */
+groupRouter.get('/points', authClient, authUser, isAdmin, getGroupsPoints);
+
+/**
+ * @swagger
+ * /api/groups/points/:id:
+ *  get:
+ *   tags: [Groups]
+ *   summary: Récupère les points d'un groupe par son UUID
+ *   security:
+ *    - clientAuth: []
+ *    - userAuth: []
+ *   parameters:
+ *    - in: path
+ *      name: id
+ *      schema:
+ *       type: string
+ *       format: uuid
+ *      required: true
+ *      description: UUID du groupe
+ *   responses:
+ *    200:
+ *     description: Retourne les points du groupe
+ *    401:
+ *     description: Non autorisé
+ *    404:
+ *     description: Aucun groupe trouvé
+ *    500:
+ *     description: Erreur serveur
+ */
+groupRouter.get('/points/:id', authClient, authUser, GetPoints);
 
 export default groupRouter;

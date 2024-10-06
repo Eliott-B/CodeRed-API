@@ -125,4 +125,35 @@ const addPenalty = async (req, res) => {
     }
 }
 
-export { getAllGroups, getGroupById, createGroup, loginGroup, authGroup, updateGroup, deleteGroup, addPenalty };
+const getGroupsPoints = async (req, res) => {
+    try {
+        let groups = await groupModel.findAll();
+        let points = [];
+        groups.forEach(group => {
+            points.push({ name: group.name, points: group.points });
+        });
+        res.status(200).json(points);
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+}
+
+const getPoints = async (req, res) => {
+    try {
+        if (req.auth.admin === false || req.auth.groupUUID !== req.params.id) {
+            res.status(401).send({ message: 'Unauthorized' });
+        }
+        else {
+            let group = await groupModel.findByPk(req.params.id);
+            if (group) {
+                res.status(200).json({ points: group.points });
+            } else {
+                res.status(404).send({ message: 'Group not found' });
+            }
+        }
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+}
+
+export { getAllGroups, getGroupById, createGroup, loginGroup, authGroup, updateGroup, deleteGroup, addPenalty, getGroupsPoints, getPoints };
