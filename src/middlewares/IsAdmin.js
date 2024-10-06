@@ -1,8 +1,10 @@
 const isAdmin = (req, res, next) => {
     if (!req.auth.admin) {
-        return res.status(401).send({ message: 'Unauthorized' });
+        res.status(401).send({ message: 'Unauthorized' });
     }
-    next();
+    else {
+        next();
+    }
 }
 
 export default isAdmin;
