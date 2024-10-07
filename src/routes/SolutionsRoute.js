@@ -179,7 +179,7 @@ solutionRouter.put('/:enigmaId/:groupId', authClient, authUser, isAdmin, updateS
 
 /**
  * @swagger
- * /api/solutions/:enigmaId/:groupId:
+ * /api/solutions/:enigmaId:
  *  patch:
  *   tags: [Solutions]
  *   summary: Essaye la réponse d'une solution par l'ID de l'énigme
@@ -204,7 +204,9 @@ solutionRouter.put('/:enigmaId/:groupId', authClient, authUser, isAdmin, updateS
  *         type: string
  *   responses:
  *    200:
- *     description: Solution modifiée
+ *     description: Solution réussie
+ *    400:
+ *     description: Mauvaise réponse
  *    401:
  *     description: Non autorisé
  *    404:
@@ -216,7 +218,7 @@ solutionRouter.put('/:enigmaId', authClient, authUser, answer);
 
 /**
  * @swagger
- * /api/solutions/:enigmaId/:groupId:
+ * /api/solutions/:enigmaId:
  *  patch:
  *   tags: [Solutions]
  *   summary: Utilise un indice d'une solution par l'ID de l'énigme
@@ -230,18 +232,9 @@ solutionRouter.put('/:enigmaId', authClient, authUser, answer);
  *       type: integer
  *      required: true
  *      description: ID de l'énigme
- *   requestBody:
- *    required: true
- *    content:
- *     application/json:
- *      schema:
- *       type: object
- *       properties:
- *        tip_used:
- *         type: boolean
  *   responses:
  *    200:
- *     description: Solution modifiée
+ *     description: Tip
  *    401:
  *     description: Non autorisé
  *    404:

@@ -84,14 +84,14 @@ const answer = async (req, res) => {
 };
 
 const useTip = async (req, res) => {
-    if (req.body.tip_used === undefined) {
+    if (! req.body.answer === undefined) {
         return
     }
     try {
         let solution = await solutionModel.findByPk(req.params.enigmaId, req.auth.groupUUID);
         if (solution) {
             await solution.update({
-                tip_used: req.body.tip_used
+                tip_used: true
             });
             let enigma = await enigmaModel.findByPk(req.params.enigmaId);
             res.status(200).json(enigma.tip);
