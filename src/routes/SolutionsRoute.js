@@ -182,11 +182,10 @@ solutionRouter.put('/:enigmaId/:groupId', authClient, authUser, isAdmin, updateS
  * /api/solutions/:enigmaId/:groupId:
  *  patch:
  *   tags: [Solutions]
- *   summary: Essaye la réponse d'une solution par l'ID de l'énigme et l'UUID du groupe
+ *   summary: Essaye la réponse d'une solution par l'ID de l'énigme
  *   security:
  *    - clientAuth: []
  *    - userAuth: []
- *    - adminAuth: []
  *   parameters:
  *    - in: path
  *      name: enigmaId
@@ -194,13 +193,6 @@ solutionRouter.put('/:enigmaId/:groupId', authClient, authUser, isAdmin, updateS
  *       type: integer
  *      required: true
  *      description: ID de l'énigme
- *    - in: path
- *      name: groupId
- *      schema:
- *       type: string
- *       format: uuid
- *      required: true
- *      description: UUID du groupe
  *   requestBody:
  *    required: true
  *    content:
@@ -227,11 +219,10 @@ solutionRouter.put('/:enigmaId', authClient, authUser, answer);
  * /api/solutions/:enigmaId/:groupId:
  *  patch:
  *   tags: [Solutions]
- *   summary: Modifie l'utilisation d'un indice d'une solution par l'ID de l'énigme et l'UUID du groupe
+ *   summary: Utilise un indice d'une solution par l'ID de l'énigme
  *   security:
  *    - clientAuth: []
  *    - userAuth: []
- *    - adminAuth: []
  *   parameters:
  *    - in: path
  *      name: enigmaId
@@ -239,13 +230,6 @@ solutionRouter.put('/:enigmaId', authClient, authUser, answer);
  *       type: integer
  *      required: true
  *      description: ID de l'énigme
- *    - in: path
- *      name: groupId
- *      schema:
- *       type: string
- *       format: uuid
- *      required: true
- *      description: UUID du groupe
  *   requestBody:
  *    required: true
  *    content:
@@ -265,7 +249,7 @@ solutionRouter.put('/:enigmaId', authClient, authUser, answer);
  *    500:
  *     description: Erreur serveur
  */
-solutionRouter.put('/:enigmaId/:groupId', authClient, authUser, isAdmin, useTip);
+solutionRouter.put('/:enigmaId', authClient, authUser, useTip);
 
 /**
  * @swagger

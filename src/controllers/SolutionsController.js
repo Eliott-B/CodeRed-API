@@ -60,6 +60,9 @@ const updateSolution = async (req, res) => {
 };
 
 const answer = async (req, res) => {
+    if (req.body.answer === undefined) {
+        return
+    }
     try {
         let solution = await solutionModel.findByPk(req.params.enigmaId, req.auth.groupUUID);
         if (solution) {
@@ -85,12 +88,13 @@ const useTip = async (req, res) => {
         return
     }
     try {
-        let solution = await solutionModel.findByPk(req.params.enigmaId, req.params.groupId);
+        let solution = await solutionModel.findByPk(req.params.enigmaId, req.auth.groupUUID);
         if (solution) {
             await solution.update({
                 tip_used: req.body.tip_used
             });
-            res.status(200).json(solution);
+            let enigma = await enigmaModel.findByPk(req.params.enigmaId);
+            res.status(200).json(enigma.tip);
         } else {
             res.status(404).send({ message: 'Solution not found' });
         }
