@@ -26,6 +26,19 @@ const getSolutionsToAnGroup = async (req, res) => {
     }
 }
 
+const getSolutionsToAnEnigmaAndToAnGroup = async (req, res) => {
+    try {
+        let solutions = await solutionModel.findAll({ where: { enigma_id: req.params.enigmaId, group_id: req.params.groupId } });
+        if (solutions) {
+            res.status(200).json(solutions);
+        } else {
+            res.status(404).send({ message: 'Solution not found' });
+        }
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};
+
 const createSolution = async (req, res) => {
     try {
         let solution = await solutionModel.create({
@@ -60,17 +73,18 @@ const updateSolution = async (req, res) => {
 };
 
 const answer = async (req, res) => {
-    if (req.body.answer === undefined) {
+    if (! req.body.answer) {
+        res.status(400).send({ message: 'Answer is required' });
         return
     }
     try {
-        let solution = await solutionModel.findByPk(req.params.enigmaId, req.auth.groupUUID);
-        if (solution) {
-            if (solution.solution == req.body.answer) {
-                await solution.update({
+        let solution = await solutionModel.findAll({ where: { enigma_id: req.params.enigmaId, group_id: req.auth.groupUUID } });
+        if (solution && solution.length > 0) {
+            if (solution[0].solution == req.body.answer) {
+                await solution[0].update({
                     success: true
                 });
-                res.status(200).json(solution);
+                res.status(200).json(solution[0]);
             }
             else {
                 res.status(400).send({ message: 'Wrong answer' });
@@ -84,8 +98,8 @@ const answer = async (req, res) => {
 };
 
 const useTip = async (req, res) => {
-    if (! req.body.answer === undefined) {
-        return
+    if (req.body.answer) {
+        next();
     }
     try {
         let solution = await solutionModel.findByPk(req.params.enigmaId, req.auth.groupUUID);
@@ -117,4 +131,4 @@ const deleteSolution = async (req, res) => {
     }
 };
 
-export { getSolutionsToAnEnigma, getSolutionsToAnGroup, createSolution, updateSolution, answer, useTip, deleteSolution };
+export { getSolutionsToAnEnigma, getSolutionsToAnGroup, getSolutionsToAnEnigmaAndToAnGroup, createSolution, updateSolution, answer, useTip, deleteSolution };

@@ -2,7 +2,7 @@ import express from 'express';
 import authUser from '../middlewares/AuthUser.js';
 import authClient from '../middlewares/AuthClient.js';
 import isAdmin from '../middlewares/IsAdmin.js';
-import { getSolutionsToAnEnigma, getSolutionsToAnGroup, createSolution, updateSolution, answer, useTip, deleteSolution } from '../controllers/SolutionsController.js';
+import { getSolutionsToAnEnigma, getSolutionsToAnGroup, getSolutionsToAnEnigmaAndToAnGroup, createSolution, updateSolution, answer, useTip, deleteSolution } from '../controllers/SolutionsController.js';
 
 const solutionRouter = express.Router();
 
@@ -128,6 +128,8 @@ solutionRouter.get('/:id', authClient, authUser, isAdmin, getSolutionsToAnGroup)
  */
 solutionRouter.post('/', authClient, authUser, isAdmin, createSolution);
 
+solutionRouter.get('/:enigmaId/:groupId', authClient, authUser, isAdmin, getSolutionsToAnEnigmaAndToAnGroup);
+
 /**
  * @swagger
  * /api/solutions/:enigmaId/:groupId:
@@ -242,7 +244,7 @@ solutionRouter.put('/:enigmaId', authClient, authUser, answer);
  *    500:
  *     description: Erreur serveur
  */
-solutionRouter.put('/:enigmaId', authClient, authUser, useTip);
+solutionRouter.put('/tip/:enigmaId', authClient, authUser, useTip);
 
 /**
  * @swagger
