@@ -1,4 +1,4 @@
-import { db, solutionModel } from '../index.js';
+import { db, solutionModel, enigmaModel } from '../index.js';
 
 const getSolutionsToAnEnigma = async (req, res) => {
     try {
@@ -29,8 +29,16 @@ const getSolutionsToAnGroup = async (req, res) => {
 const getSolutionsToAnEnigmaAndToAnGroup = async (req, res) => {
     try {
         let solutions = await solutionModel.findAll({ where: { enigma_id: req.params.enigmaId, group_id: req.params.groupId } });
-        if (solutions) {
-            res.status(200).json(solutions);
+        if (solutions && solutions.length > 0) {
+            let results = {
+                enigma_id: solutions[0].enigma_id,
+                group_id: solutions[0].group_id,
+                input_file: solutions[0].input_file,
+                console_output: solutions[0].console_output,
+                success: solutions[0].success,
+                tip_used: solutions[0].tip_used
+            }
+            res.status(200).json(results);
         } else {
             res.status(404).send({ message: 'Solution not found' });
         }
@@ -45,7 +53,7 @@ const createSolution = async (req, res) => {
             enigma_id: req.body.enigmaId,
             group_id: req.body.groupId,
             solution: req.body.solution,
-            input_path: req.body.inputPath,
+            input_file: req.body.inputFile,
             console_output: req.body.consoleOutput
         });
         res.status(201).json(solution);
@@ -73,7 +81,7 @@ const updateSolution = async (req, res) => {
 };
 
 const answer = async (req, res) => {
-    if (! req.body.answer) {
+    if (!req.body.answer) {
         res.status(400).send({ message: 'Answer is required' });
         return
     }

@@ -2,7 +2,7 @@ import { Model, DataTypes } from 'sequelize';
 import { groupModel, enigmaModel } from '../index.js';
 
 const SolutionModel = (sequelize) => {
-    class Solution extends Model {}
+    class Solution extends Model { }
     Solution.init({
         enigma_id: {
             type: DataTypes.INTEGER,
@@ -39,8 +39,8 @@ const SolutionModel = (sequelize) => {
                 }
             }
         },
-        input_path: {
-            type: DataTypes.TEXT('long')
+        input_file: {
+            type: DataTypes.BLOB('long')
         },
         console_output: {
             type: DataTypes.TEXT('long')
@@ -54,11 +54,11 @@ const SolutionModel = (sequelize) => {
             defaultValue: false
         }
     },
-    {
-        sequelize,
-        modelName: "Solution",
-        tableName: "solutions"
-    });
+        {
+            sequelize,
+            modelName: "Solution",
+            tableName: "solutions"
+        });
     return Solution;
 }
 
