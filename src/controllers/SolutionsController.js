@@ -80,14 +80,22 @@ const answer = async (req, res) => {
     try {
         let solution = await solutionModel.findAll({ where: { enigma_id: req.params.enigmaId, group_id: req.auth.groupUUID } });
         if (solution && solution.length > 0) {
-            if (solution[0].solution == req.body.answer) {
-                await solution[0].update({
-                    success: true
-                });
-                res.status(200).json(solution[0]);
-            }
-            else {
-                res.status(400).send({ message: 'Wrong answer' });
+            let enigma = await enigmaModel.findByPk(req.params.enigmaId);
+            if (enigma) {
+                if (enigma.enabled === false) {
+                    res.status(400).send({ message: 'Enigma disabled' });
+                } else {
+                    if (solution[0].solution == req.body.answer) {
+                        await solution[0].update({
+                            success: true
+                        });
+                        res.status(200).json(solution[0]);
+                    } else {
+                        res.status(400).send({ message: 'Wrong answer' });
+                    }
+                }
+            } else {
+                res.status(404).send({ message: 'Enigma not found' });
             }
         } else {
             res.status(404).send({ message: 'Solution not found' });
