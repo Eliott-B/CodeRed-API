@@ -1,4 +1,4 @@
-import { db, solutionModel } from '../index.js';
+import { db, solutionModel, enigmaModel } from '../index.js';
 
 const getSolutionsToAnEnigma = async (req, res) => {
     try {
@@ -81,7 +81,7 @@ const updateSolution = async (req, res) => {
 };
 
 const answer = async (req, res) => {
-    if (! req.body.answer) {
+    if (!req.body.answer) {
         res.status(400).send({ message: 'Answer is required' });
         return
     }
