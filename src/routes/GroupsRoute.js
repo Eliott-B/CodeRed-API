@@ -55,21 +55,13 @@ groupRouter.get('/', authClient, authUser, getAllGroups);
 
 /**
  * @swagger
- * /api/groups/points/:id:
+ * /api/groups/points:
  *  get:
  *   tags: [Groups]
  *   summary: Récupère les points d'un groupe par son UUID
  *   security:
  *    - clientAuth: []
  *    - userAuth: []
- *   parameters:
- *    - in: path
- *      name: id
- *      schema:
- *       type: string
- *       format: uuid
- *      required: true
- *      description: UUID du groupe
  *   responses:
  *    200:
  *     description: Retourne les points du groupe
@@ -80,7 +72,7 @@ groupRouter.get('/', authClient, authUser, getAllGroups);
  *    500:
  *     description: Erreur serveur
  */
-groupRouter.get('/points/:id', authClient, authUser, getPoints);
+groupRouter.get('/selfPoints', authClient, authUser, getPoints);
 
 /**
  * @swagger

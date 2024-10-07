@@ -129,10 +129,10 @@ const getGroupsPoints = async (req, res) => {
     try {
         let groups = await groupModel.findAll();
         let results = [];
-        groups.forEach(async group => {
-            let localPoints = group.points;
-            let groupSolutions = await solutionModel.findAll({ where: { group_id: req.params.id } });
-            groupSolutions.forEach(async solution => {
+        for (const group of groups) {
+            let localPoints = - group.penalty;
+            let groupSolutions = await solutionModel.findAll({ where: { group_id: group.id } });
+            for (const solution of groupSolutions) {
                 if (solution.success === true) {
                     let enigma = await enigmaModel.findByPk(solution.enigma_id);
                     localPoints += enigma.points;
@@ -141,9 +141,9 @@ const getGroupsPoints = async (req, res) => {
                     let enigma = await enigmaModel.findByPk(solution.enigma_id);
                     localPoints -= enigma.tip_cost;
                 }
-            });
+            }
             results.push({ name: group.name, points: localPoints });
-        });
+        }
         res.status(200).json(results);
     } catch (err) {
         res.status(500).send({ message: err.message });
@@ -152,31 +152,26 @@ const getGroupsPoints = async (req, res) => {
 
 const getPoints = async (req, res) => {
     try {
-        if (req.auth.admin === false) {
-            res.status(401).send({ message: 'Unauthorized' });
-        }
-        else {
-            let group = await groupModel.findByPk(req.params.id);
-            if (group) {
-                let points = group.penalty
+        let group = await groupModel.findByPk(req.auth.groupUUID);
+        if (group) {
+            let points = - group.penalty
 
-                let groupSolutions = await solutionModel.findAll({ where: { group_id: req.params.id } });
+            let groupSolutions = await solutionModel.findAll({ where: { group_id: req.auth.groupUUID } });
 
-                groupSolutions.forEach(async solution => {
-                    if (solution.success === true) {
-                        let enigma = await enigmaModel.findByPk(solution.enigma_id);
-                        points += enigma.points;
-                    }
-                    if (solution.tip_used === true) {
-                        let enigma = await enigmaModel.findByPk(solution.enigma_id);
-                        points -= enigma.tip_cost;
-                    }
-                });
+            for (const solution of groupSolutions) {
+                if (solution.success === true) {
+                    let enigma = await enigmaModel.findByPk(solution.enigma_id);
+                    points += enigma.points;
+                }
+                if (solution.tip_used === true) {
+                    let enigma = await enigmaModel.findByPk(solution.enigma_id);
+                    points -= enigma.tip_cost;
+                }
+            };
 
-                res.status(200).json({ points: points });
-            } else {
-                res.status(404).send({ message: 'Group not found' });
-            }
+            res.status(200).json({ points: points });
+        } else {
+            res.status(404).send({ message: 'Group not found' });
         }
     } catch (err) {
         res.status(500).send({ message: err.message });
