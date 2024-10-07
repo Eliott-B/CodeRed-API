@@ -27,23 +27,28 @@ const getSolutionsToAnGroup = async (req, res) => {
 }
 
 const getSolutionsToAnEnigmaAndToAnGroup = async (req, res) => {
-    try {
-        let solutions = await solutionModel.findAll({ where: { enigma_id: req.params.enigmaId, group_id: req.params.groupId } });
-        if (solutions && solutions.length > 0) {
-            let results = {
-                enigma_id: solutions[0].enigma_id,
-                group_id: solutions[0].group_id,
-                input_file: solutions[0].input_file,
-                console_output: solutions[0].console_output,
-                success: solutions[0].success,
-                tip_used: solutions[0].tip_used
+    if (req.params.enigmaId === 'tip') {
+        // Todo next route
+    }
+    else {
+        try {
+            let solutions = await solutionModel.findAll({ where: { enigma_id: req.params.enigmaId, group_id: req.params.groupId } });
+            if (solutions && solutions.length > 0) {
+                let results = {
+                    enigma_id: solutions[0].enigma_id,
+                    group_id: solutions[0].group_id,
+                    input_file: solutions[0].input_file,
+                    console_output: solutions[0].console_output,
+                    success: solutions[0].success,
+                    tip_used: solutions[0].tip_used
+                }
+                res.status(200).json(results);
+            } else {
+                res.status(404).send({ message: 'Solution not found' });
             }
-            res.status(200).json(results);
-        } else {
-            res.status(404).send({ message: 'Solution not found' });
+        } catch (err) {
+            res.status(500).send({ message: err.message });
         }
-    } catch (err) {
-        res.status(500).send({ message: err.message });
     }
 };
 
@@ -118,9 +123,9 @@ const useTip = async (req, res) => {
         next();
     }
     try {
-        let solution = await solutionModel.findByPk(req.params.enigmaId, req.auth.groupUUID);
-        if (solution) {
-            await solution.update({
+        let solution = await solutionModel.findAll({ where: {enigma_id: req.params.enigmaId, group_id: req.auth.groupUUID}});
+        if (solution && solution.length > 0) {
+            await solution[0].update({
                 tip_used: true
             });
             let enigma = await enigmaModel.findByPk(req.params.enigmaId);
