@@ -183,4 +183,16 @@ const getPoints = async (req, res) => {
     }
 }
 
-export { getAllGroups, getGroupById, createGroup, loginGroup, authGroup, updateGroup, deleteGroup, addPenalty, getGroupsPoints, getPoints };
+const getAdminStatus = async (req, res) => {
+    try {
+        if (req.auth.admin) {
+            res.status(200).json({ admin: true });
+        } else {
+            res.status(200).json({ admin: false });
+        }
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+}
+
+export { getAllGroups, getGroupById, createGroup, loginGroup, authGroup, updateGroup, deleteGroup, addPenalty, getGroupsPoints, getPoints, getAdminStatus };
