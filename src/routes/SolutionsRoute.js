@@ -114,7 +114,7 @@ solutionRouter.get('/:id', authClient, authUser, isAdmin, getSolutionsToAnGroup)
  *         format: uuid
  *        solution:
  *         type: string
- *        inputPath:
+ *        inputFile:
  *         type: string
  *        consoleOutput:
  *         type: string
@@ -128,7 +128,7 @@ solutionRouter.get('/:id', authClient, authUser, isAdmin, getSolutionsToAnGroup)
  */
 solutionRouter.post('/', authClient, authUser, isAdmin, createSolution);
 
-solutionRouter.get('/:enigmaId/:groupId', authClient, authUser, isAdmin, getSolutionsToAnEnigmaAndToAnGroup);
+solutionRouter.get('/:enigmaId/:groupId', authClient, authUser, getSolutionsToAnEnigmaAndToAnGroup);
 
 /**
  * @swagger

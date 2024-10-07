@@ -39,8 +39,8 @@ const SolutionModel = (sequelize) => {
                 }
             }
         },
-        input_path: {
-            type: DataTypes.TEXT('long')
+        input_file: {
+            type: DataTypes.BLOB('long')
         },
         console_output: {
             type: DataTypes.TEXT('long')
