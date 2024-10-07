@@ -59,17 +59,19 @@ const updateSolution = async (req, res) => {
     }
 };
 
-const successSolution = async (req, res) => {
-    if (req.body.success === undefined) {
-        return
-    }
+const answer = async (req, res) => {
     try {
-        let solution = await solutionModel.findByPk(req.params.enigmaId, req.params.groupId);
+        let solution = await solutionModel.findByPk(req.params.enigmaId, req.auth.groupUUID);
         if (solution) {
-            await solution.update({
-                success: req.body.success
-            });
-            res.status(200).json(solution);
+            if (solution.solution == req.body.answer) {
+                await solution.update({
+                    success: true
+                });
+                res.status(200).json(solution);
+            }
+            else {
+                res.status(400).send({ message: 'Wrong answer' });
+            }
         } else {
             res.status(404).send({ message: 'Solution not found' });
         }
@@ -111,4 +113,4 @@ const deleteSolution = async (req, res) => {
     }
 };
 
-export { getSolutionsToAnEnigma, getSolutionsToAnGroup, createSolution, updateSolution, successSolution, useTip, deleteSolution };
+export { getSolutionsToAnEnigma, getSolutionsToAnGroup, createSolution, updateSolution, answer, useTip, deleteSolution };

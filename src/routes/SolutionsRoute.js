@@ -2,7 +2,7 @@ import express from 'express';
 import authUser from '../middlewares/AuthUser.js';
 import authClient from '../middlewares/AuthClient.js';
 import isAdmin from '../middlewares/IsAdmin.js';
-import { getSolutionsToAnEnigma, getSolutionsToAnGroup, createSolution, updateSolution, successSolution, useTip, deleteSolution } from '../controllers/SolutionsController.js';
+import { getSolutionsToAnEnigma, getSolutionsToAnGroup, createSolution, updateSolution, answer, useTip, deleteSolution } from '../controllers/SolutionsController.js';
 
 const solutionRouter = express.Router();
 
@@ -182,7 +182,7 @@ solutionRouter.put('/:enigmaId/:groupId', authClient, authUser, isAdmin, updateS
  * /api/solutions/:enigmaId/:groupId:
  *  patch:
  *   tags: [Solutions]
- *   summary: Modifie le succès d'une solution par l'ID de l'énigme et l'UUID du groupe
+ *   summary: Essaye la réponse d'une solution par l'ID de l'énigme et l'UUID du groupe
  *   security:
  *    - clientAuth: []
  *    - userAuth: []
@@ -208,8 +208,8 @@ solutionRouter.put('/:enigmaId/:groupId', authClient, authUser, isAdmin, updateS
  *      schema:
  *       type: object
  *       properties:
- *        success:
- *         type: boolean
+ *        answer:
+ *         type: string
  *   responses:
  *    200:
  *     description: Solution modifiée
@@ -220,7 +220,7 @@ solutionRouter.put('/:enigmaId/:groupId', authClient, authUser, isAdmin, updateS
  *    500:
  *     description: Erreur serveur
  */
-solutionRouter.put('/:enigmaId/:groupId', authClient, authUser, isAdmin, successSolution);
+solutionRouter.put('/:enigmaId', authClient, authUser, answer);
 
 /**
  * @swagger
