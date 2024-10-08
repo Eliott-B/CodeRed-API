@@ -1,7 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 
 const EnigmaModel = (sequelize) => {
-    class Enigma extends Model {}
+    class Enigma extends Model { }
     Enigma.init({
         id: {
             type: DataTypes.INTEGER,
@@ -27,7 +27,7 @@ const EnigmaModel = (sequelize) => {
             }
         },
         description: {
-            type: DataTypes.TEXT('long'),
+            type: DataTypes.BLOB('long'),
             allowNull: false,
             notEmpty: false,
             validate: {
@@ -36,10 +36,6 @@ const EnigmaModel = (sequelize) => {
                 },
                 notEmpty: {
                     msg: "Entrez une description"
-                },
-                len: {
-                    args: [1, 45],
-                    msg: "La longueur de la description doit être entre 1 et 45 charactères"
                 }
             }
         },
@@ -85,11 +81,11 @@ const EnigmaModel = (sequelize) => {
             defaultValue: false
         }
     },
-    {
-        sequelize,
-        modelName: "Enigma",
-        tableName: "enigmas"
-    });
+        {
+            sequelize,
+            modelName: "Enigma",
+            tableName: "enigmas"
+        });
     return Enigma;
 }
 
