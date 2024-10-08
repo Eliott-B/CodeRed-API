@@ -128,6 +128,35 @@ solutionRouter.get('/:id', authClient, authUser, isAdmin, getSolutionsToAnGroup)
  */
 solutionRouter.post('/', authClient, authUser, isAdmin, createSolution);
 
+
+/**
+ * @swagger
+ * /api/solutions/:enigmaId:
+ *  get:
+ *   tags: [Solutions]
+ *   summary: Utilise un indice d'une solution par l'ID de l'énigme
+ *   security:
+ *    - clientAuth: []
+ *    - userAuth: []
+ *   parameters:
+ *    - in: path
+ *      name: enigmaId
+ *      schema:
+ *       type: integer
+ *      required: true
+ *      description: ID de l'énigme
+ *   responses:
+ *    200:
+ *     description: Tip
+ *    401:
+ *     description: Non autorisé
+ *    404:
+ *     description: Solution non retrouvée
+ *    500:
+ *     description: Erreur serveur
+ */
+solutionRouter.get('/tip/:enigmaId', authClient, authUser, useTip);
+
 solutionRouter.get('/:enigmaId/:groupId', authClient, authUser, getSolutionsToAnEnigmaAndToAnGroup);
 
 /**
@@ -217,34 +246,6 @@ solutionRouter.put('/:enigmaId/:groupId', authClient, authUser, isAdmin, updateS
  *     description: Erreur serveur
  */
 solutionRouter.put('/:enigmaId', authClient, authUser, answer);
-
-/**
- * @swagger
- * /api/solutions/:enigmaId:
- *  patch:
- *   tags: [Solutions]
- *   summary: Utilise un indice d'une solution par l'ID de l'énigme
- *   security:
- *    - clientAuth: []
- *    - userAuth: []
- *   parameters:
- *    - in: path
- *      name: enigmaId
- *      schema:
- *       type: integer
- *      required: true
- *      description: ID de l'énigme
- *   responses:
- *    200:
- *     description: Tip
- *    401:
- *     description: Non autorisé
- *    404:
- *     description: Solution non retrouvée
- *    500:
- *     description: Erreur serveur
- */
-solutionRouter.put('/tip/:enigmaId', authClient, authUser, useTip);
 
 /**
  * @swagger
